@@ -11,7 +11,8 @@ function App() {
   }
 
   function handleAddTodos(newTodo) {
-    const newTodoList = [...todos, newTodo]
+    const newTodoItem = { text: newTodo, completed: false }
+    const newTodoList = [...todos, newTodoItem]
     persistData(newTodoList)
     setTodos(newTodoList)
   }
@@ -25,9 +26,20 @@ function App() {
   }
 
   function handleEditTodo(index) {
-    const valueToBeEdited = todos[index]
+    const valueToBeEdited = todos[index].text
     setTodoValue(valueToBeEdited)
     handleDeleteTodo(index)
+  }
+
+  function handleCompleteTodo(index) {
+    const newTodoList = todos.map((todo, todoIndex) => {
+      if (todoIndex === index) {
+        return { ...todo, completed: !todo.completed }
+      }
+      return todo
+    })
+    persistData(newTodoList)
+    setTodos(newTodoList)
   }
 
   useEffect(() => {
@@ -48,9 +60,10 @@ function App() {
 
   return (
     <>
-    <h1>To Do App</h1>
+      <h1>To Do App</h1>
+      <h3> Get you're work done🫡</h3>
       <TodoInput todoValue={todoValue} setTodoValue={setTodoValue} handleAddTodos={handleAddTodos} />
-      <TodoList handleEditTodo={handleEditTodo} handleDeleteTodo={handleDeleteTodo} todos={todos} />
+      <TodoList handleEditTodo={handleEditTodo} handleDeleteTodo={handleDeleteTodo} handleCompleteTodo={handleCompleteTodo} todos={todos} />
     </>
   )
 }

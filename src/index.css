@@ -104,6 +104,10 @@ p {
   opacity: 0.7;
 }
 
+.todoItem.completed p {
+  text-decoration: line-through;
+  color: rgb(66, 210, 71);
+}
 
 
 @media (min-width: 640px) {
