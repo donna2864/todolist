@@ -1,62 +1,56 @@
 import { useState, useEffect } from "react"
-import TodoInput from "./components/todoinput"
-import ToDoList from "./components/todolist"
+import TodoInput from "./components/TodoInput"
+import TodoList from "./components/TodoList"
 
 function App() {
-  //Stateful Variable
-  // const [todoitem, setTodoitem] = useState([
-  //   'Learn react Today',
-  //   'Read Bible',
-  //   'take joshva to the bakery'
-  // ])  static todo items
+  const [todos, setTodos] = useState([])
+  const [todoValue, setTodoValue] = useState('')
 
-  const [todoitem, setTodoitem] = useState([])//empty array
-  const [todoValue, setTodoValue] = useState('') 
-
-  //to persist data in local storage
-  function persistData(newList){
-    localStorage.setItem('todoitem', JSON.stringify({todoitem: newList}))
+  function persistData(newList) {
+    localStorage.setItem('todos', JSON.stringify({ todos: newList }))
   }
 
-  // repainting the DOM -- reason for stateful variable
-  function handleAddTodoItem(newTodoItem) {
-    const newTodoList = [...todoitem, newTodoItem]
+  function handleAddTodos(newTodo) {
+    const newTodoList = [...todos, newTodo]
     persistData(newTodoList)
-    //update to do
-    setTodoitem(newTodoList)
+    setTodos(newTodoList)
   }
 
-  function handleDeleteTodoItem(index){
-    const newTodoList = todoitem.filter((todoitem, todoIndex) => {
-      return todoIndex != index
+  function handleDeleteTodo(index) {
+    const newTodoList = todos.filter((todo, todoIndex) => {
+      return todoIndex !== index
     })
     persistData(newTodoList)
-    setTodoitem(newTodoList)
+    setTodos(newTodoList)
   }
 
-  function handleEditTodoItem(index){
-    const valueToEdit = todoitem[index]
-    setTodoValue(valueToEdit)
-    handleDeleteTodoItem(index)
+  function handleEditTodo(index) {
+    const valueToBeEdited = todos[index]
+    setTodoValue(valueToBeEdited)
+    handleDeleteTodo(index)
   }
 
   useEffect(() => {
-    if(!localStorage){
+    if (!localStorage) {
       return
     }
-    let localTodo = localStorage.getItem('todoitem')
-    if(!localTodo){
+
+    let localTodos = localStorage.getItem('todos')
+    if (!localTodos) {
       return
     }
-    localTodo = JSON.parse(localTodo).todoitem
-    setTodoitem(localTodo)
+
+    console.log(localTodos)
+    localTodos = JSON.parse(localTodos).todos
+    setTodos(localTodos)
+
   }, [])
 
   return (
-    <main>
-      <TodoInput todoValue={todoValue} setTodoValue={setTodoValue} handleAddTodoItem={handleAddTodoItem}/>
-      <ToDoList handleEditTodoItem={handleEditTodoItem} handleDeleteTodoItem={handleDeleteTodoItem} todoitem={todoitem}/>
-    </main>
+    <>
+      <TodoInput todoValue={todoValue} setTodoValue={setTodoValue} handleAddTodos={handleAddTodos} />
+      <TodoList handleEditTodo={handleEditTodo} handleDeleteTodo={handleDeleteTodo} todos={todos} />
+    </>
   )
 }
 

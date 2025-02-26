@@ -36,7 +36,6 @@ header,
   width: 100%;
   margin: 0 auto;
   gap: 14px;
-  padding-bottom: 14px;
 }
 
 header input {
@@ -118,7 +117,6 @@ p {
     font-size: 1em;
   }
 }
-
 @keyframes animate {
   0%{
       transform: translateY(0) rotate(0deg);
